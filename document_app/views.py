@@ -1,14 +1,41 @@
+import hashlib, json
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
 from . import models
 
 
-def getDocument(request, identifier):
-    document = get_object_or_404(models.Document, identifier=identifier)
+# View for retrieving a document based on key
+@csrf_exempt
+@require_http_methods(['GET'])
+def getDocument(request, key):
+    document = get_object_or_404(models.Document, key=key)
     return JsonResponse({
         'markdown_text': document.markdown_text,
         'published': document.published,
     })
 
-# def createDocument(request):
+# View for creating a document using a post request
+@csrf_exempt
+@require_http_methods(['POST'])
+def createDocument(request):
+
+    data = json.loads(request.body)
+
+    hash = hashlib.shake_256()
+    hash.update(data['text'].encode())
+    hash.update(data['creator'].encode())
+    key = hash.hexdigest(10)
+
+    models.Document.objects.create(
+        markdown_text = data['text'],
+        creator = data['creator'],
+        key = key
+    )
+
+    return JsonResponse({
+        'key': key
+    })

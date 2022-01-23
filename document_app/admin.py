@@ -10,6 +10,6 @@ admin.site.index_title = 'Placeholder Title'
 
 @admin.register(models.Document)
 class DocumentAdmin(admin.ModelAdmin):
-    list_display = ['identifier', 'creator', 'published']
+    list_display = ['key', 'creator', 'published']
     list_filter = ['creator', 'published']
-    search_fields = ['identifier', 'creator', 'published']
+    search_fields = ['key', 'creator', 'published']

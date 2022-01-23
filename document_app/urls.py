@@ -4,5 +4,6 @@ from . import views
 
 
 urlpatterns = [
-    path('get/<identifier>/', views.getDocument, name='getDocument'),
+    path('get/<key>/', views.getDocument, name='getDocument'),
+    path('create/', views.createDocument, name='createDocument')
 ]

@@ -12,5 +12,5 @@ class Document(models.Model):
     # when this document is published
     published = models.DateTimeField(auto_now_add=True)
 
-    # the hash id used for retrieval
-    identifier = models.CharField(unique=True, max_length=10)
+    # the hash key used for retrieval
+    key = models.CharField(unique=True, max_length=20)
