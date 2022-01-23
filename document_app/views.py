@@ -28,7 +28,8 @@ def publishDocument(request):
     hash = hashlib.shake_256()
     hash.update(data['text'].encode())
     hash.update(data['creator'].encode())
-    key = hash.hexdigest(10)
+    keyLength = models.Document._meta.get_field('key').max_length
+    key = hash.hexdigest(keyLength // 2)
 
     models.Document.objects.create(
         markdown_text = data['text'],
