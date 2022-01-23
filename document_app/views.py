@@ -18,10 +18,10 @@ def getDocument(request, key):
         'published': document.published,
     })
 
-# View for creating a document using a post request
+# View for creating a new document using a post request
 @csrf_exempt
 @require_http_methods(['POST'])
-def createDocument(request):
+def publishDocument(request):
 
     data = json.loads(request.body)
 

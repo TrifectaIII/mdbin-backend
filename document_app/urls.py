@@ -5,5 +5,5 @@ from . import views
 
 urlpatterns = [
     path('get/<key>/', views.getDocument, name='getDocument'),
-    path('create/', views.createDocument, name='createDocument')
+    path('publish/', views.publishDocument, name='publishDocument')
 ]
