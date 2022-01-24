@@ -25,13 +25,18 @@ SECRET_KEY = 'django-insecure-k59-6sbdx27t6o4^+3fhq3z6)7*xd%0r13g^wk#rf0=qqweo(1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # 'http://localhost:3000',
+]
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-  'http://localhost:3000',
-)
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
 
+RECAPTCHA_V2_URL = 'https://www.google.com/recaptcha/api/siteverify'
+# SECURITY WARNING: keep the secret key used in production secret!
+RECAPTCHA_V2_SECRET_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
 
 # Application definition
 

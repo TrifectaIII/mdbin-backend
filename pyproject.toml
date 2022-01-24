@@ -8,6 +8,7 @@ authors = ["Dakota Madden-Fong <maddenfong@gmail.com>"]
 python = "^3.8"
 Django = "^4.0.1"
 django-cors-headers = "^3.11.0"
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
 
