@@ -1,4 +1,4 @@
-import hashlib, json, datetime, requests
+import uuid, json, requests
 from email_validator import validate_email, EmailNotValidError
 
 from django.conf import settings
@@ -34,7 +34,16 @@ def publishDocument(request):
     or 'recaptchaToken' not in data or not data['recaptchaToken']):
         return HttpResponse(
             '400 Required Field Missing or Empty',
-            status = 400
+            status = 400,
+        )
+
+    # verify that email address is valid
+    try:
+        email = validate_email(data['creator']).email
+    except EmailNotValidError as e:
+        return HttpResponse(
+            '400 Invalid Email',
+            status = 400,
         )
 
     # verify recaptcha token with key
@@ -44,33 +53,18 @@ def publishDocument(request):
     })
     if (not 'success' in r.json() or not r.json()['success']):
         return HttpResponse(
-            '401 Unauthorized',
-            status = 401
+            '401 Recaptcha Failure',
+            status = 401,
         )
 
-    # verify that email address is valid
-    try:
-        email = validate_email(data['creator']).email
-    except EmailNotValidError as e:
-        return HttpResponse(
-            '400 Invalid Email',
-            status = 400
-        )
+    # create a key with uuid library
+    key = uuid.uuid1()
 
-    # fill hash with text, creator email and current time
-    hash = hashlib.shake_256()
-    hash.update(data['text'].encode())
-    hash.update(email.encode())
-    hash.update(str(datetime.datetime.now()).encode())
-
-    # create the key with length based on model field length
-    keyLength = models.Document._meta.get_field('key').max_length
-    key = hash.hexdigest(keyLength // 2)
-
+    # add document to database
     models.Document.objects.create(
         markdown_text = data['text'],
         creator = email,
-        key = key
+        key = key,
     )
 
     return JsonResponse({'key': key})

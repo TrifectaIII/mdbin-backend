@@ -13,4 +13,4 @@ class Document(models.Model):
     published = models.DateTimeField(auto_now_add=True)
 
     # the hash key used for retrieval
-    key = models.CharField(unique=True, max_length=20)
+    key = models.CharField(unique=True, max_length=36)
