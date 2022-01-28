@@ -69,6 +69,14 @@ python-versions = ">=3.7"
 Django = ">=2.2"
 
 [[package]]
+name = "django-ratelimit"
+version = "3.0.1"
+description = "Cache-based rate-limiting for Django."
+category = "main"
+optional = false
+python-versions = ">=3.4"
+
+[[package]]
 name = "dnspython"
 version = "2.2.0"
 description = "DNS toolkit"
@@ -154,7 +162,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "17c4e74a61c518aae516f2193e205d0ad2db0a6af227b0bc4c88660119a6aa5d"
+content-hash = "ab9b4ef549e86dba3eaf619f85f826f5a9839ef4e1714522aa0264a00ef3349a"
 
 [metadata.files]
 asgiref = [
@@ -194,6 +202,10 @@ django = [
 django-cors-headers = [
     {file = "django-cors-headers-3.11.0.tar.gz", hash = "sha256:eb98389bf7a2afc5d374806af4a9149697e3a6955b5a2dc2bf049f7d33647456"},
     {file = "django_cors_headers-3.11.0-py3-none-any.whl", hash = "sha256:a22be2befd4069c4fc174f11cf067351df5c061a3a5f94a01650b4e928b0372b"},
+]
+django-ratelimit = [
+    {file = "django-ratelimit-3.0.1.tar.gz", hash = "sha256:73223d860abd5c5d7b9a807fabb39a6220068129b514be8d78044b52607ab154"},
+    {file = "django_ratelimit-3.0.1-py2.py3-none-any.whl", hash = "sha256:857e797f23de948b204a31dba9d88aea3ce731b7a5d926d0240c772e19b5486f"},
 ]
 dnspython = [
     {file = "dnspython-2.2.0-py3-none-any.whl", hash = "sha256:081649da27ced5e75709a1ee542136eaba9842a0fe4c03da4fb0a3d3ed1f3c44"},

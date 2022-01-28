@@ -1,18 +1,18 @@
 import uuid, json, requests
-from email_validator import validate_email, EmailNotValidError
-
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
+from email_validator import validate_email, EmailNotValidError
+from ratelimit.decorators import ratelimit
 
 from . import models
 
 
 # View for retrieving a document based on key
-@csrf_exempt
-@require_http_methods(['GET'])
+# @csrf_exempt
+@require_http_methods(['GET']) # existing documents can only be retrieved
 def getDocument(request, key):
     document = get_object_or_404(models.Document, key=key)
     return JsonResponse({
@@ -21,8 +21,9 @@ def getDocument(request, key):
     })
 
 # View for creating a new document using a post request
-@csrf_exempt
-@require_http_methods(['POST'])
+# @csrf_exempt
+@require_http_methods(['POST']) # must use post to publish
+@ratelimit(key = 'ip', rate = '1/m', block = True) # ratelimit publishing
 def publishDocument(request):
 
     # extract data from request body
@@ -58,7 +59,7 @@ def publishDocument(request):
         )
 
     # create a key with uuid library
-    key = uuid.uuid1()
+    key = str(uuid.uuid1())
 
     # add document to database
     models.Document.objects.create(

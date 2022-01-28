@@ -25,9 +25,7 @@ SECRET_KEY = 'django-insecure-k59-6sbdx27t6o4^+3fhq3z6)7*xd%0r13g^wk#rf0=qqweo(1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    # 'http://localhost:3000',
-]
+ALLOWED_HOSTS = []
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
@@ -134,3 +132,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Settings for Django Cache Framework
+# Used by django-ratelimit
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        # don't need a location if we only have 1 cache
+        # 'LOCATION': 'unique-snowflake',
+    }
+}
