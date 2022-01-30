@@ -10,7 +10,7 @@ class Document(models.Model):
     creator = models.EmailField()
 
     # when this document is published
-    published = models.DateTimeField(auto_now_add=True)
+    published = models.DateTimeField(auto_now_add = True)
 
     # the hash key used for retrieval
-    key = models.CharField(unique=True, max_length=36)
+    key = models.CharField(unique = True, max_length = 36)
