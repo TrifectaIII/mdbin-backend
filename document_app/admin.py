@@ -4,9 +4,9 @@ from .models import Document
 
 
 # Change admin site header and title
-admin.site.site_header = 'Placeholder Header'
-admin.site.site_title = 'Placeholder Title'
-admin.site.index_title = 'Placeholder Title'
+admin.site.site_header = 'mdbin Admin Panel'
+admin.site.site_title = 'mdbin Admin Panel'
+admin.site.index_title = 'Home'
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
