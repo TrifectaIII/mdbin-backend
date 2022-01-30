@@ -12,4 +12,5 @@ admin.site.index_title = 'Placeholder Title'
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ['key', 'creator', 'published']
     list_filter = ['creator', 'published']
-    search_fields = ['key', 'creator', 'published']
+    search_fields = ['key', 'creator']
+    ordering = ['-published']
