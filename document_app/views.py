@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
-# from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from email_validator import validate_email, EmailNotValidError
 from ratelimit.decorators import ratelimit
 
@@ -11,7 +11,6 @@ from .models import Document
 
 
 # View for retrieving a document based on key
-# @csrf_exempt
 @require_http_methods(['GET']) # existing documents can only be retrieved
 def getDocument(request, key):
     document = get_object_or_404(Document, key = key)
@@ -21,9 +20,9 @@ def getDocument(request, key):
     })
 
 # View for creating a new document using a post request
-# @csrf_exempt
+@csrf_exempt # disable csrf for api post view
 @require_http_methods(['POST']) # must use post to publish
-@ratelimit(key = 'ip', rate = '1/m', block = True) # ratelimit publishing
+@ratelimit(key = 'ip', rate = '1/m', block = True) # ratelimit publish requests
 def publishDocument(request):
 
     # extract data from request body

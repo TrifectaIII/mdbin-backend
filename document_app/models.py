@@ -3,6 +3,9 @@ from django.db import models
 
 class Document(models.Model):
 
+    # the uuid key used for retrieval
+    key = models.CharField(primary_key=True, max_length = 36)
+
     # the markdown text of the document
     markdown_text = models.TextField()
 
@@ -11,6 +14,3 @@ class Document(models.Model):
 
     # when this document is published
     published = models.DateTimeField(auto_now_add = True)
-
-    # the hash key used for retrieval
-    key = models.CharField(unique = True, max_length = 36)

@@ -1,10 +1,8 @@
 import json
-import re
-
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from document_app.models import Document
+from ..models import Document
 
 
 # Test the getDocument route
@@ -14,9 +12,9 @@ class GetDocumentTestCase(TestCase):
     # start with a document in the db already
     def setUp(self):
         Document.objects.create(
+            key = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
             markdown_text = '## This is my document',
             creator = 'test@test.com',
-            key = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         )
 
     # tests document retrieval

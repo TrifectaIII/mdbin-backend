@@ -27,10 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = []
+
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
 RECAPTCHA_V2_URL = 'https://www.google.com/recaptcha/api/siteverify'
 # SECURITY WARNING: keep the secret key used in production secret!
