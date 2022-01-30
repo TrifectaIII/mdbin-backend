@@ -10,5 +10,5 @@ class ViewsTestCase(TestCase):
             key = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         )
 
-    def testGetDocumentView(self):
+    def test_getDocument_view(self):
         self.assertEqual(True, True)
