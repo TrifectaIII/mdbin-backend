@@ -14,7 +14,7 @@ from .models import Document
 # @csrf_exempt
 @require_http_methods(['GET']) # existing documents can only be retrieved
 def getDocument(request, key):
-    document = get_object_or_404(Document, key=key)
+    document = get_object_or_404(Document, key = key)
     return JsonResponse({
         'text': document.markdown_text,
         'published': document.published,

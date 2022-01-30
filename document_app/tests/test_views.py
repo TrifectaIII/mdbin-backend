@@ -44,14 +44,6 @@ class GetDocumentTestCase(TestCase):
 @override_settings(RATELIMIT_ENABLE=False)
 class PublishDocumentTestCase(TestCase):
 
-    # start with a document in the db already
-    def setUp(self):
-        Document.objects.create(
-            markdown_text = '## This is my document',
-            creator = 'test@test.com',
-            key = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        )
-
     # tests document publish
     def test_publishDocument(self):
         response = self.client.post(
@@ -64,6 +56,7 @@ class PublishDocumentTestCase(TestCase):
             content_type = 'application/json',
         )
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(Document.objects.count(), 1)
         try:
             data = json.loads(response.content)
         except:
@@ -88,7 +81,7 @@ class PublishDocumentTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Invalid Email')
-        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(Document.objects.count(), 0)
 
     # tests document publish with missing data
     def test_publishDocument_incomplete(self):
@@ -104,7 +97,7 @@ class PublishDocumentTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Required Field Missing or Empty')
-        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(Document.objects.count(), 0)
         response = self.client.post(
             reverse('publishDocument'),
             data = {
@@ -116,7 +109,7 @@ class PublishDocumentTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Required Field Missing or Empty')
-        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(Document.objects.count(), 0)
 
         # test missing creator
         response = self.client.post(
@@ -129,7 +122,7 @@ class PublishDocumentTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Required Field Missing or Empty')
-        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(Document.objects.count(), 0)
         response = self.client.post(
             reverse('publishDocument'),
             data = {
@@ -141,7 +134,7 @@ class PublishDocumentTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Required Field Missing or Empty')
-        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(Document.objects.count(), 0)
 
         # test missing recaptchaToken
         response = self.client.post(
@@ -154,7 +147,7 @@ class PublishDocumentTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Required Field Missing or Empty')
-        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(Document.objects.count(), 0)
         response = self.client.post(
             reverse('publishDocument'),
             data = {
@@ -166,4 +159,4 @@ class PublishDocumentTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Required Field Missing or Empty')
-        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(Document.objects.count(), 0)
