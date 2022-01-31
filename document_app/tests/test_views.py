@@ -59,7 +59,11 @@ class PublishDocumentTestCase(TestCase):
         except:
             self.fail('Could not parse response as json.')
         try:
-            doc = Document.objects.get(key = uuid.UUID(data['key']).bytes)
+           key =  uuid.UUID(data['key']).bytes
+        except ValueError:
+            self.fail('Could not parse key from hex to bytes')
+        try:
+            doc = Document.objects.get(key = key)
         except Document.DoesNotExist:
             self.fail('New document not found in database.')
         self.assertEqual(doc.markdown_text, 'goodbye')
