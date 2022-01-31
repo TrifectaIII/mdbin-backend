@@ -70,5 +70,5 @@ def publishDocument(request):
         creator = email,
     )
 
-    # return key to user
+    # return key to client
     return JsonResponse({'key': str(document.key)})

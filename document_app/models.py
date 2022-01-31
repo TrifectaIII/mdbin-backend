@@ -19,3 +19,11 @@ class Document(models.Model):
 
     # when this document is published
     published = models.DateTimeField(auto_now_add = True)
+
+    # string method for printing
+    def __str__(self):
+        return "Key: {key}, Creator: {creator}, Published: {published}".format(
+            key = str(self.key),
+            creator = self.creator,
+            published = str(self.published),
+        )
