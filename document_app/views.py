@@ -16,12 +16,12 @@ def getDocument(request, key):
 
     # convert url to uuid
     try:
-        keyBytes = uuid.UUID(key).bytes
+        keyUUID = uuid.UUID(key)
     except ValueError:
         raise Http404
     
     # fetch document from db
-    document = get_object_or_404(Document, key = keyBytes)
+    document = get_object_or_404(Document, key = keyUUID)
 
     # return information
     return JsonResponse({
@@ -60,18 +60,15 @@ def publishDocument(request):
             'secret': settings.RECAPTCHA_V2_SECRET_KEY,
             'response': data['recaptchaToken'],
         },
-    )
-    if (not 'success' in r.json() or not r.json()['success']):
+    ).json()
+    if (not 'success' in r or not r['success']):
         return HttpResponse('Recaptcha Failure', status = 401)
 
-    # create a key with uuid library
-    key = uuid.uuid1()
-
     # add document to database
-    Document.objects.create(
+    document = Document.objects.create(
         markdown_text = data['text'],
         creator = email,
-        key = key.bytes,
     )
 
-    return JsonResponse({'key': str(key)})
+    # return key to user
+    return JsonResponse({'key': str(document.key)})

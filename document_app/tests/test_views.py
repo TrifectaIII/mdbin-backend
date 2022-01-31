@@ -11,7 +11,7 @@ class GetDocumentTestCase(TestCase):
     # start with a document in the db already
     def setUp(self):
         Document.objects.create(
-            key = uuid.UUID('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa').bytes,
+            key = uuid.UUID('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),
             markdown_text = '## This is my document',
             creator = 'test@test.com',
         )
@@ -59,7 +59,7 @@ class PublishDocumentTestCase(TestCase):
         except:
             self.fail('Could not parse response as json.')
         try:
-           key =  uuid.UUID(data['key']).bytes
+           key =  uuid.UUID(data['key'])
         except ValueError:
             self.fail('Could not parse key from hex to bytes')
         try:
