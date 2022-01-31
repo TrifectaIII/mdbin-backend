@@ -1,4 +1,4 @@
-import json
+import uuid, json
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -6,13 +6,12 @@ from ..models import Document
 
 
 # Test the getDocument route
-@override_settings(RATELIMIT_ENABLE=False)
 class GetDocumentTestCase(TestCase):
 
     # start with a document in the db already
     def setUp(self):
         Document.objects.create(
-            key = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+            key = uuid.UUID('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa').bytes,
             markdown_text = '## This is my document',
             creator = 'test@test.com',
         )
@@ -39,7 +38,7 @@ class GetDocumentTestCase(TestCase):
 
 
 # Test the publishDocument route
-@override_settings(RATELIMIT_ENABLE=False)
+@override_settings(RATELIMIT_ENABLE=False) # disable ratelimit during tests
 class PublishDocumentTestCase(TestCase):
 
     # tests document publish
@@ -60,7 +59,7 @@ class PublishDocumentTestCase(TestCase):
         except:
             self.fail('Could not parse response as json.')
         try:
-            doc = Document.objects.get(key=data['key'])
+            doc = Document.objects.get(key = uuid.UUID(data['key']).bytes)
         except Document.DoesNotExist:
             self.fail('New document not found in database.')
         self.assertEqual(doc.markdown_text, 'goodbye')

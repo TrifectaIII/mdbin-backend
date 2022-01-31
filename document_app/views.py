@@ -1,6 +1,6 @@
 import uuid, json, requests
 from django.conf import settings
-from django.http import JsonResponse, HttpResponse
+from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -13,7 +13,17 @@ from .models import Document
 # View for retrieving a document based on key
 @require_http_methods(['GET']) # existing documents can only be retrieved
 def getDocument(request, key):
-    document = get_object_or_404(Document, key = key)
+
+    # convert url to uuid
+    try:
+        keyBytes = uuid.UUID(key).bytes
+    except ValueError:
+        raise Http404
+    
+    # fetch document from db
+    document = get_object_or_404(Document, key = keyBytes)
+
+    # return information
     return JsonResponse({
         'text': document.markdown_text,
         'published': document.published,
@@ -55,13 +65,13 @@ def publishDocument(request):
         return HttpResponse('Recaptcha Failure', status = 401)
 
     # create a key with uuid library
-    key = str(uuid.uuid1())
+    key = uuid.uuid1()
 
     # add document to database
     Document.objects.create(
         markdown_text = data['text'],
         creator = email,
-        key = key,
+        key = key.bytes,
     )
 
-    return JsonResponse({'key': key})
+    return JsonResponse({'key': str(key)})

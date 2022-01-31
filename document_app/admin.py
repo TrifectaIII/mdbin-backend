@@ -10,7 +10,8 @@ admin.site.index_title = 'Home'
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
-    list_display = ['key', 'creator', 'published']
+
+    list_display = ['keyHex', 'creator', 'published']
     list_filter = ['creator', 'published']
-    search_fields = ['key', 'creator']
+    search_fields = ['keyHex', 'creator']
     ordering = ['-published']
