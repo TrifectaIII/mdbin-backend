@@ -14,7 +14,7 @@ from .models import Document
 @require_http_methods(['GET']) # existing documents can only be retrieved
 def getDocument(request, key):
 
-    # convert url to uuid
+    # convert url param to uuid
     try:
         keyUUID = uuid.UUID(key)
     except ValueError:
