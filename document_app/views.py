@@ -29,9 +29,12 @@ def publishDocument(request):
     data = json.loads(request.body)
 
     # verify that request contains needed fields
-    if (('text' not in data) or (not data['text'])
-    or ('creator' not in data) or (not data['creator'])
-    or ('recaptchaToken' not in data) or (not data['recaptchaToken'])):
+    if (('text' not in data)
+    or (not data['text'])
+    or ('creator' not in data)
+    or (not data['creator'])
+    or ('recaptchaToken' not in data)
+    or (not data['recaptchaToken'])):
         return HttpResponse('Required Field Missing or Empty', status = 400)
 
     # verify that email address is valid
@@ -41,10 +44,13 @@ def publishDocument(request):
         return HttpResponse('Invalid Email', status = 400)
 
     # verify recaptcha token with key
-    r = requests.post(settings.RECAPTCHA_V2_URL, data = {
-        'secret': settings.RECAPTCHA_V2_SECRET_KEY,
-        'response': data['recaptchaToken'],
-    })
+    r = requests.post(
+        url = settings.RECAPTCHA_V2_URL, 
+        data = {
+            'secret': settings.RECAPTCHA_V2_SECRET_KEY,
+            'response': data['recaptchaToken'],
+        },
+    )
     if (not 'success' in r.json() or not r.json()['success']):
         return HttpResponse('Recaptcha Failure', status = 401)
 
