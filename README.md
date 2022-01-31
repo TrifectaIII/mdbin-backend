@@ -3,7 +3,7 @@
 A pastebin-type tool for easily creating and sharing 
 documents with [Markdown](https://www.markdownguide.org/).
 
-See the frontend repo [here](https://github.com/TrifectaIII/mdbin-frontend)
+See the frontend repo [HERE](https://github.com/TrifectaIII/mdbin-frontend).
 
 ## Backend Tools
 
