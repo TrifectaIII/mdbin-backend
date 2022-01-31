@@ -33,7 +33,7 @@ class GetDocumentTestCase(TestCase):
     def test_getDocument_missing(self):
         response = self.client.get(reverse(
             viewname = 'getDocument', 
-            kwargs = {'key': 'aaaaaaaa-aaaa-aaaa-aaaa-bbbbbbbbbbbb'},
+            kwargs = {'key': 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'},
         ))
         self.assertEqual(response.status_code, 404)
 
