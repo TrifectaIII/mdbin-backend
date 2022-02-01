@@ -27,3 +27,7 @@ class Document(models.Model):
             creator = self.creator,
             published = str(self.published),
         )
+
+    # convert datetime to unix timestamp in ms
+    def publishedTimestampMs(self):
+        return int(self.published.timestamp() * 1000)

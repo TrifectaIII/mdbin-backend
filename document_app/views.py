@@ -23,13 +23,10 @@ def getDocument(request, key):
     # fetch document from db
     document = get_object_or_404(Document, key = keyUUID)
 
-    # convert datetime to unix MS timestamp
-    timestamp = int(document.published.timestamp() * 1000)
-
     # return information
     return JsonResponse({
         'text': document.markdown_text,
-        'published': timestamp,
+        'published': document.publishedTimestampMs(),
     })
 
 # View for creating a new document using a post request
