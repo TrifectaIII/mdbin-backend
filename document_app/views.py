@@ -40,17 +40,17 @@ def publishDocument(request):
 
     # verify that request contains needed fields
     if (('text' not in data)
-    or (not data['text'])
     or ('creator' not in data)
-    or (not data['creator'])
     or ('recaptchaToken' not in data)
+    or (not data['text'])
+    or (not data['creator'])
     or (not data['recaptchaToken'])):
         return HttpResponse('Required Field Missing or Empty', status = 400)
 
     # verify that email address is valid
     try:
         email = validate_email(data['creator']).email
-    except EmailNotValidError as e:
+    except EmailNotValidError:
         return HttpResponse('Invalid Email', status = 400)
 
     # verify recaptcha token with key
