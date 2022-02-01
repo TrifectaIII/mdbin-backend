@@ -25,7 +25,11 @@ class GetDocumentTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             json.loads(response.content)['text'], 
-            '## This is my document'
+            '## This is my document',
+        )
+        self.assertEqual(
+            type(json.loads(response.content)['published']),
+            int,
         )
 
     # test 404 when document does not exist
