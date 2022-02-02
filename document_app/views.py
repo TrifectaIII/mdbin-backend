@@ -33,7 +33,7 @@ def getDocument(request, key):
 # View for creating a new document using a post request
 @csrf_exempt # disable csrf for api post view
 @require_http_methods(['POST']) # must use post to publish
-@ratelimit(key = 'ip', rate = '1/m', block = True) # ratelimit publish requests
+@ratelimit(key = 'ip', rate = '0/m', block = True) # ratelimit publish requests
 def publishDocument(request):
 
     # extract data from request body
@@ -56,7 +56,7 @@ def publishDocument(request):
             return HttpResponse('Invalid Email Syntax', status = 400)
         elif isinstance(e, EmailUndeliverableError):
             return HttpResponse('Invalid Email Domain', status = 400)
-        return HttpResponse('Invalid Email', status = 400)
+        return HttpResponse('Invalid Email.', status = 400)
 
     # verify recaptcha token with key
     r = requests.post(

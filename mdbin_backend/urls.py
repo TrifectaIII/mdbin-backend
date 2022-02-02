@@ -14,9 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import HttpResponse, HttpResponseForbidden
 from django.urls import path, include
+from ratelimit.exceptions import Ratelimited
 
 urlpatterns = [
     path('document/', include('document_app.urls')),
     path('admin/', admin.site.urls),
 ]
+
+# custom 403 handler for ratelimiting
+def handler403(request, exception=None):
+    if isinstance(exception, Ratelimited):
+        return HttpResponse(
+            'Ratelimit exceeded. Please try again later.',
+            status = 429,
+        )
+    return HttpResponseForbidden('Forbidden')
