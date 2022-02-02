@@ -22,14 +22,8 @@ class Document(models.Model):
 
     # string method for printing
     def __str__(self):
-        return """Key: {key}
-        Creator: {creator}
-        Published: {published}""".format(
-            key = str(self.key),
-            creator = self.creator,
-            published = str(self.published),
-        )
+        return str(self.key)
 
-    # convert datetime to unix timestamp in ms
+    # convert published datetime to unix timestamp in ms
     def publishedTimestampMs(self):
         return int(self.published.timestamp() * 1000)
