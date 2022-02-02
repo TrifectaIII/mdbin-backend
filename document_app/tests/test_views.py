@@ -75,6 +75,8 @@ class PublishDocumentTestCase(TestCase):
     
     # tests document publish with invalid email field
     def test_publishDocument_invalid(self):
+
+        # test invalid email syntax
         response = self.client.post(
             path = reverse(viewname = 'publishDocument'),
             data = {
@@ -87,6 +89,8 @@ class PublishDocumentTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Invalid Email Syntax')
         self.assertEqual(Document.objects.count(), 0)
+
+        # test invalid domain name
         response = self.client.post(
             path = reverse(viewname = 'publishDocument'),
             data = {
