@@ -4,7 +4,8 @@ from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from email_validator import validate_email, EmailNotValidError
+from email_validator import validate_email, \
+EmailNotValidError, EmailSyntaxError, EmailUndeliverableError
 from ratelimit.decorators import ratelimit
 
 from .models import Document
@@ -50,7 +51,11 @@ def publishDocument(request):
     # verify that email address is valid
     try:
         email = validate_email(data['creator']).email
-    except EmailNotValidError:
+    except EmailNotValidError as e:
+        if isinstance(e, EmailSyntaxError):
+            return HttpResponse('Invalid Email Syntax', status = 400)
+        elif isinstance(e, EmailUndeliverableError):
+            return HttpResponse('Invalid Email Domain', status = 400)
         return HttpResponse('Invalid Email', status = 400)
 
     # verify recaptcha token with key

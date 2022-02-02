@@ -85,7 +85,19 @@ class PublishDocumentTestCase(TestCase):
             content_type = 'application/json',
         )
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b'Invalid Email')
+        self.assertEqual(response.content, b'Invalid Email Syntax')
+        self.assertEqual(Document.objects.count(), 0)
+        response = self.client.post(
+            path = reverse(viewname = 'publishDocument'),
+            data = {
+                'text': 'goodbye',
+                'creator': 'invalid@invalid.invalid',
+                'recaptchaToken': 'hello',
+            },
+            content_type = 'application/json',
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b'Invalid Email Domain')
         self.assertEqual(Document.objects.count(), 0)
 
     # tests document publish with missing data
