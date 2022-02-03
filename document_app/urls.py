@@ -1,9 +1,8 @@
 from django.urls import path
 
-from . import views
+from .views import DocumentView
 
 
 urlpatterns = [
-    path('get/<key>/', views.getDocument, name='getDocument'),
-    path('publish/', views.publishDocument, name='publishDocument'),
+    path('', DocumentView.as_view(), name = 'DocumentView'),
 ]
