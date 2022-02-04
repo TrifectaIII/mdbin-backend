@@ -40,7 +40,8 @@ class GetDocumentTestCase(TestCase):
 
 
 # Test the publishDocument route
-@override_settings(RATELIMIT_ENABLE=False) # disable ratelimit during tests
+# disable ratelimit during tests
+@override_settings(RATELIMIT_ENABLE=False)
 class PublishDocumentTestCase(TestCase):
 
     # tests document publish
@@ -181,7 +182,8 @@ class PublishDocumentTestCase(TestCase):
         self.assertEqual(Document.objects.count(), 0)
 
     # tests document publish with ratelimiting
-    @override_settings(RATELIMIT_ENABLE=True) # enable ratelimit during this test
+    # enable ratelimit during this test
+    @override_settings(RATELIMIT_ENABLE=True)
     def test_publishDocument_ratelimit(self):
 
         # first post should succeed
@@ -215,9 +217,9 @@ class PublishDocumentTestCase(TestCase):
         response = self.client.post(
             path = reverse('DocumentView'),
             data = {
-                'text': 'goodbye',
-                'creator': 'test2@test.com',
-                'recaptchaToken': 'hello',
+                'text': 'goodbye2',
+                'creator': 'test5@test.com',
+                'recaptchaToken': 'hello2',
             },
             content_type = 'application/json',
         )
@@ -226,3 +228,4 @@ class PublishDocumentTestCase(TestCase):
             response.content,
             b'Ratelimit exceeded. Please try again later.',
         )
+        self.assertEqual(Document.objects.count(), 1)
