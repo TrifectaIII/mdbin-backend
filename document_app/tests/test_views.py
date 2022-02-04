@@ -18,10 +18,9 @@ class GetDocumentTestCase(TestCase):
 
     # tests document retrieval
     def test_getDocument(self):
-        response = self.client.get(reverse(
-            viewname = 'getDocument', 
-            kwargs = {'key': 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'},
-        ))
+        path = reverse('DocumentView') \
+            + '?key=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+        response = self.client.get(path)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             json.loads(response.content)['text'], 
@@ -34,10 +33,9 @@ class GetDocumentTestCase(TestCase):
 
     # test 404 when document does not exist
     def test_getDocument_missing(self):
-        response = self.client.get(reverse(
-            viewname = 'getDocument', 
-            kwargs = {'key': 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'},
-        ))
+        path = reverse('DocumentView') \
+            + '?key=bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'
+        response = self.client.get(path)
         self.assertEqual(response.status_code, 404)
 
 
@@ -48,7 +46,7 @@ class PublishDocumentTestCase(TestCase):
     # tests document publish
     def test_publishDocument(self):
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': 'goodbye',
                 'creator': 'test2@test.com',
@@ -78,7 +76,7 @@ class PublishDocumentTestCase(TestCase):
 
         # test invalid email syntax
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': 'goodbye',
                 'creator': 'test3testcom',
@@ -92,7 +90,7 @@ class PublishDocumentTestCase(TestCase):
 
         # test invalid domain name
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': 'goodbye',
                 'creator': 'invalid@invalid.invalid',
@@ -109,7 +107,7 @@ class PublishDocumentTestCase(TestCase):
 
         # test missing text
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'creator': 'test4@test.com',
                 'recaptchaToken': 'hello',
@@ -120,7 +118,7 @@ class PublishDocumentTestCase(TestCase):
         self.assertEqual(response.content, b'Required Field Missing or Empty')
         self.assertEqual(Document.objects.count(), 0)
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': '',
                 'creator': 'test4@test.com',
@@ -134,7 +132,7 @@ class PublishDocumentTestCase(TestCase):
 
         # test missing creator
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': 'hello',
                 'recaptchaToken': 'hello',
@@ -145,7 +143,7 @@ class PublishDocumentTestCase(TestCase):
         self.assertEqual(response.content, b'Required Field Missing or Empty')
         self.assertEqual(Document.objects.count(), 0)
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': 'hello',
                 'creator': '',
@@ -159,7 +157,7 @@ class PublishDocumentTestCase(TestCase):
 
         # test missing recaptchaToken
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': 'hello',
                 'creator': 'test4@test.com',
@@ -170,7 +168,7 @@ class PublishDocumentTestCase(TestCase):
         self.assertEqual(response.content, b'Required Field Missing or Empty')
         self.assertEqual(Document.objects.count(), 0)
         response = self.client.post(
-            path = reverse(viewname = 'publishDocument'),
+            path = reverse('DocumentView'),
             data = {
                 'text': 'hello',
                 'creator': 'test4@test.com',
