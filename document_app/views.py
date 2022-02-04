@@ -80,5 +80,5 @@ class DocumentView(View):
             creator = email,
         )
 
-        # return key to client
+        # return auto-generated document uuid key to client
         return JsonResponse({'key': str(document.key)})

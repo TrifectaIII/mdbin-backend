@@ -179,3 +179,50 @@ class PublishDocumentTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b'Required Field Missing or Empty')
         self.assertEqual(Document.objects.count(), 0)
+
+    # tests document publish with ratelimiting
+    @override_settings(RATELIMIT_ENABLE=True) # enable ratelimit during this test
+    def test_publishDocument_ratelimit(self):
+
+        # first post should succeed
+        response = self.client.post(
+            path = reverse('DocumentView'),
+            data = {
+                'text': 'goodbye',
+                'creator': 'test2@test.com',
+                'recaptchaToken': 'hello',
+            },
+            content_type = 'application/json',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Document.objects.count(), 1)
+        try:
+            data = json.loads(response.content)
+        except:
+            self.fail('Could not parse response as json.')
+        try:
+           key =  uuid.UUID(data['key'])
+        except ValueError:
+            self.fail('Could not parse key from hex to bytes')
+        try:
+            doc = Document.objects.get(key = key)
+        except Document.DoesNotExist:
+            self.fail('New document not found in database.')
+        self.assertEqual(doc.markdown_text, 'goodbye')
+        self.assertEqual(doc.creator, 'test2@test.com')
+
+        # second should fail
+        response = self.client.post(
+            path = reverse('DocumentView'),
+            data = {
+                'text': 'goodbye',
+                'creator': 'test2@test.com',
+                'recaptchaToken': 'hello',
+            },
+            content_type = 'application/json',
+        )
+        self.assertEqual(response.status_code, 429)
+        self.assertEqual(
+            response.content,
+            b'Ratelimit exceeded. Please try again later.',
+        )
