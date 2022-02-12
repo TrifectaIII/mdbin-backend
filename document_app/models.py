@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.conf import settings
 
 
 class Document(models.Model):
@@ -12,7 +13,9 @@ class Document(models.Model):
     )
 
     # the markdown text of the document
-    markdown_text = models.TextField()
+    markdown_text = models.TextField(
+        max_length = settings.DOCUMENT_MAX_LENGTH,
+    )
 
     # the email of the document creator
     creator = models.EmailField()

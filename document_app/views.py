@@ -53,6 +53,10 @@ class DocumentView(View):
         or (not data['recaptchaToken'])):
             return HttpResponse('Required Field Missing or Empty', status = 400)
 
+        # verify that document is not too long
+        if (len(data['text']) > settings.DOCUMENT_MAX_LENGTH):
+            return HttpResponse('Document Too Long', status = 413)
+
         # verify that email address is syntactically valid and that domain exists
         try:
             email = validate_email(data['creator']).email

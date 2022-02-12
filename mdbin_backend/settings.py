@@ -142,3 +142,6 @@ CACHES = {
         # 'LOCATION': 'unique-snowflake',
     }
 }
+
+# Max Length of Document Strings
+DOCUMENT_MAX_LENGTH = 100000
