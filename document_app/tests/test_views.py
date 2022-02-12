@@ -213,19 +213,24 @@ class PublishDocumentTestCase(TestCase):
         self.assertEqual(doc.markdown_text, 'goodbye')
         self.assertEqual(doc.creator, 'test2@test.com')
 
-        # second should fail
-        response = self.client.post(
-            path = reverse('DocumentView'),
-            data = {
-                'text': 'goodbye2',
-                'creator': 'test5@test.com',
-                'recaptchaToken': 'hello2',
-            },
-            content_type = 'application/json',
-        )
-        self.assertEqual(response.status_code, 429)
+        # do a bunch more and one should fail eventually
+        final = False
+        for i in range(1000):
+            response = self.client.post(
+                path = reverse('DocumentView'),
+                data = {
+                    'text': 'goodbye2',
+                    'creator': 'test5@test.com',
+                    'recaptchaToken': 'hello2',
+                },
+                content_type = 'application/json',
+            )
+            if (response.status_code != 200):
+                final = response
+                break
+        self.assertTrue(final)
+        self.assertEqual(final.status_code, 429)
         self.assertEqual(
-            response.content,
+            final.content,
             b'Ratelimit exceeded. Please try again later.',
         )
-        self.assertEqual(Document.objects.count(), 1)
