@@ -143,5 +143,6 @@ CACHES = {
     }
 }
 
-# Max Length of Document Strings
-DOCUMENT_MAX_LENGTH = 100000
+# Max Length of Document in characters
+# enforced at model and view levels
+DOCUMENT_MAX_LENGTH = 10 ** 10
