@@ -20,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # config variables
 config = {
     # defaults
+    'FRONTEND_URL': 'http://localhost:3000',
     'SECRET_KEY': 'django-insecure-k59-6sbdx27t6o4^+3fhq3z6)7*xd%0r13g^wk#rf0=qqweo(1',
     'RECAPTCHA_SECRET_KEY': '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
 
@@ -29,8 +30,6 @@ config = {
     # override from environment
     **os.environ,
 }
-
-print(config['RECAPTCHA_SECRET_KEY'])
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -46,7 +45,7 @@ ALLOWED_HOSTS = []
 CSRF_TRUSTED_ORIGINS = []
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
+CORS_ORIGIN_WHITELIST = [config['FRONTEND_URL']]
 
 RECAPTCHA_V2_URL = 'https://www.google.com/recaptcha/api/siteverify'
 # SECURITY WARNING: keep the secret recaptcha key used in production secret!
