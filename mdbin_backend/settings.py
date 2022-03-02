@@ -18,16 +18,17 @@ from dotenv import dotenv_values
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # config variables
+# in-code defaults < .env file < environment
 config = {
     # defaults
     'FRONTEND_URL': 'http://localhost:3000',
     'SECRET_KEY': 'django-insecure-k59-6sbdx27t6o4^+3fhq3z6)7*xd%0r13g^wk#rf0=qqweo(1',
     'RECAPTCHA_SECRET_KEY': '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
 
-    # override from .env file
+    # next, override from .env file
     **dotenv_values(BASE_DIR / '.env'),
 
-    # override from environment
+    # lastly, override from environment
     **os.environ,
 }
 
