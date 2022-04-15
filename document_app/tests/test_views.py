@@ -40,6 +40,8 @@ class GetDocumentTestCase(TestCase):
 
 
 # Test the publishDocument route
+# recaptcha should always succeed during testing, so use test key
+@override_settings(RECAPTCHA_V2_SECRET_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe')
 # disable ratelimit during tests
 @override_settings(RATELIMIT_ENABLE=False)
 class PublishDocumentTestCase(TestCase):
