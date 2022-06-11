@@ -25,7 +25,7 @@ config = {
     'SECRET_KEY': 'django-insecure-k59-6sbdx27t6o4^+3fhq3z6)7*xd%0r13g^wk#rf0=qqweo(1',
     'RECAPTCHA_SECRET_KEY': '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
 
-    # next, override from .env file
+    # next, override from .env.development file
     **dotenv_values(BASE_DIR / '.env'),
 
     # lastly, override from environment
